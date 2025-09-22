@@ -2,7 +2,7 @@
 
 A Model Context Protocol (MCP) server providing access to **102 curated UK Government technology standards** for AI assistants. Get context-aware recommendations for accessibility, APIs, security, cloud strategy, and more.
 
-## 🎯 What This Provides
+## What This Provides
 
 - **102 Curated Standards**: Carefully selected UK Government tech standards URLs
 - **Context-Aware Recommendations**: Get standards based on your work type and project phase
@@ -10,7 +10,7 @@ A Model Context Protocol (MCP) server providing access to **102 curated UK Gover
 - **Multiple Access Methods**: MCP protocol, HTTP API, and command-line tools
 - **Real-time Updates**: Keep standards current with automated refresh capabilities
 
-## 📋 Quick Start
+## Quick Start
 
 ### Prerequisites
 - **Node.js 18+** 
@@ -46,7 +46,7 @@ npm run serve:http
 # API available at http://localhost:3001
 ```
 
-## 🔧 MCP Client Configuration
+## MCP Client Configuration
 
 ### Claude Desktop
 
@@ -123,7 +123,7 @@ The server provides 8 context-aware tools:
 - Generate compliance checklist for your service
 - Parameters: `serviceDescription` (required)
 
-## 🌐 HTTP API
+## HTTP API
 
 When running `npm run serve:http`, access these endpoints:
 
@@ -154,7 +154,7 @@ POST /api/compliance
 }
 ```
 
-## 📊 Curated Standards Categories
+## Curated Standards Categories
 
 **102 standards across 11 focused categories:**
 
@@ -190,7 +190,7 @@ Get relevant standards based on your specific work:
 | Mobile + Native apps | iOS/Android security, app store guidelines |
 | Cloud + Data | GDPR compliance, cloud-first policy |
 
-## 🚀 Advanced Usage
+## Advanced Usage
 
 ### Custom Database Path
 ```bash
@@ -215,7 +215,7 @@ Set `LOG_LEVEL` environment variable:
 - `info`: General information (default)
 - `debug`: Detailed debugging
 
-## 🏗 System Architecture
+## System Architecture
 
 ### Focused Approach
 This system uses a **curated approach** rather than broad discovery:
@@ -235,7 +235,7 @@ This system uses a **curated approach** rather than broad discovery:
 - **MCP**: Full Model Context Protocol implementation
 - **Embeddings**: Transformers.js with local models (optional)
 
-## 📝 Data Sources
+## Data Sources
 
 All 102 standards are sourced from official UK Government websites:
 
@@ -245,7 +245,7 @@ All 102 standards are sourced from official UK Government websites:
 - **Gov.UK Guidance**: APIs, cloud, and technical standards
 - **ICO Resources**: Data protection and GDPR compliance
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -272,11 +272,11 @@ pkill -f "http-server"
 3. Ensure database exists: `ls -la standards.db`
 4. Test basic functionality: `npm test`
 
-## 📄 License
+##� License
 
 MIT License - see LICENSE file for details.
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -284,7 +284,7 @@ MIT License - see LICENSE file for details.
 4. Add tests if applicable
 5. Submit a pull request
 
-## 🔄 Updates
+## Updates
 
 The system automatically tracks when standards are updated. Run `npm run update` periodically to refresh content.
 
