@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "uk-gov-tech-standards": {
+      "command": "node",
+      "args": ["/path/to/uk-gov-tech-standards-mcp/dist/index.js"],
+      "env": {
+        "DATABASE_URL": "sqlite:/path/to/uk-gov-tech-standards-mcp/standards.db",
+        "NODE_ENV": "production",
+        "LOG_LEVEL": "info"
+      }
+    }
+  }
+}
