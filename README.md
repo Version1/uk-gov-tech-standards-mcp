@@ -46,6 +46,91 @@ npm run serve:http
 # API available at http://localhost:3001
 ```
 
+## 🐳 Docker Deployment
+
+### Prerequisites
+- **Docker** and **Docker Compose**
+
+### Quick Start with Docker
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd uk-gov-tech-standards-mcp
+
+# Copy environment template
+cp docker.env.template .env
+
+# Build and start services
+docker-compose up -d
+
+# Check status
+docker-compose ps
+```
+
+The setup includes:
+- **MCP Server**: `localhost:3000`
+- **HTTP API**: `localhost:8080` 
+- **ChromaDB**: `localhost:8000` (vector database)
+
+### Docker Services
+
+**MCP Server (default):**
+```bash
+docker-compose up -d uk-gov-standards-mcp
+```
+
+**HTTP Server (alternative):**
+```bash
+docker-compose --profile http-only up -d
+```
+
+**Both servers:**
+```bash
+docker-compose up -d uk-gov-standards-mcp uk-gov-standards-http
+```
+
+### Data Persistence
+
+Docker volumes persist data in:
+- `./data/` - SQLite database
+- `./logs/` - Application logs  
+- `./models/` - ML models cache
+- `chromadb_data` - Vector embeddings
+
+### Docker Configuration
+
+**Environment Variables** (`.env` file):
+```env
+NODE_ENV=production
+LOG_LEVEL=info
+DB_PATH=/app/data/standards.db
+CHROMA_HOST=chromadb
+CHROMA_PORT=8000
+```
+
+**Health Checks:**
+```bash
+# Check MCP server health
+curl http://localhost:3000/health
+
+# Check HTTP API health  
+curl http://localhost:8080/health
+
+# Check ChromaDB health
+curl http://localhost:8000/api/v1/heartbeat
+```
+
+**Logs:**
+```bash
+# View all logs
+docker-compose logs -f
+
+# View specific service logs
+docker-compose logs -f uk-gov-standards-mcp
+docker-compose logs -f chromadb
+```
+
 ## 🔧 MCP Client Configuration
 
 ### Claude Desktop

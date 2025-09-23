@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  # UK Gov Tech Standards MCP Server
+  uk-gov-standards-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uk-gov-standards-mcp
+    restart: unless-stopped
+    ports:
+      - "3000:3000"  # MCP Server port
+      - "8080:8080"  # HTTP API port (if using serve:http)
+    volumes:
+      # Persist database and logs
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./models:/app/models
+      # Optional: mount custom config
+      - ./.env:/app/.env:ro
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+      - DB_PATH=/app/data/standards.db
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    depends_on:
+      - chromadb
+    networks:
+      - mcp-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => { process.exit(1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ChromaDB for vector storage
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - chromadb_data:/chroma/chroma
+    environment:
+      - CHROMA_SERVER_CORS_ALLOW_ORIGINS=["*"]
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_PORT=8000
+    networks:
+      - mcp-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # HTTP Server variant (alternative to MCP server)
+  uk-gov-standards-http:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uk-gov-standards-http
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./.env:/app/.env:ro
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=info
+      - DB_PATH=/app/data/standards.db
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    depends_on:
+      - chromadb
+    networks:
+      - mcp-network
+    command: ["node", "dist/http-server.js"]
+    profiles:
+      - http-only
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  chromadb_data:
+    driver: local
+
+networks:
+  mcp-network:
+    driver: bridge
